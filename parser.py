@@ -5,6 +5,8 @@ import os
 import pandas as pd
 files = os.listdir('blogs/')
 
+keywords = ['travel', 'flight']
+li = []
 def load_xml(file):
 	file = 'blogs/' + file
 	with codecs.open(file, 'r', encoding='utf-8',
@@ -12,8 +14,6 @@ def load_xml(file):
 		xml_string = f.read()
 
 	soup = BeautifulSoup(unescape(xml_string), 'lxml')
-
-
 	l = soup.text.strip().split('\n')
 	final = ''
 	for line in l:
@@ -23,6 +23,12 @@ def load_xml(file):
 		final += line
 
 	final = final.replace('urlLink', '')
+	for k in keywords:
+		if k in final.lower():
+			print('t')
+			li.append(1)
+			print(final)
+			break
 	return final
 
 def create_dataframe():
@@ -31,9 +37,10 @@ def create_dataframe():
 	count = 0
 	print(len(files))
 	for file in files:
-		print(count)
 		blog = load_xml(file)
 		read_dict['blogs'].append(blog)
 		count += 1
 
-	df = pd.DataFrame.from_dict(read_dict)
+	return pd.DataFrame.from_dict(read_dict)
+
+
