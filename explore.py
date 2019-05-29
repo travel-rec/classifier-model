@@ -2,9 +2,6 @@ import pandas as pd
 
 df = pd.read_csv("./wikivoyage-listings-en.csv")
 
-print(df.shape)
-print(df.columns)
-
 cities = {}
 
 for a in df['article']:
@@ -18,10 +15,7 @@ for t in df['type']:
 		distribution[t] = 1
 	distribution[t] += 1
 
-print(len(cities.keys()))
-print(distribution)
-
-def get_data_by_city(city):
+def get_data_by_city(city, df):
 	start_index = 0
 	end_index = 0
 	found = False
@@ -34,6 +28,12 @@ def get_data_by_city(city):
 			break
 	return df[start_index:end_index]
 
-ny = get_data_by_city('new york city')
+def slice_by_type(place_type, df):
+	type_df = df[df['type'] == place_type]
+	return type_df
 
-print(ny.head)
+print(distribution)
+ny = get_data_by_city('detroit', df)
+print(ny.shape)
+ne = slice_by_type('drink', ny)
+print(ne.shape)
